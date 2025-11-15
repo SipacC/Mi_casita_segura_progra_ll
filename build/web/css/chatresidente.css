@@ -1,0 +1,237 @@
+/* 🌐 Diseño general */
+body {
+    background-color: #f0f2f5;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 📱 Contenedor principal */
+.chat-container {
+    display: flex;
+    width: 95%;
+    max-width: 1200px;
+    height: 90vh;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Panel izquierdo (lista de chats) */
+.panel-lista {
+    width: 30%;
+    background-color: #ededed;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-lista h3 {
+    margin: 10px;
+    font-size: 18px;
+}
+
+.panel-lista ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.panel-lista li {
+    border-bottom: 1px solid #ddd;
+}
+
+.panel-lista button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 12px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.panel-lista button:hover {
+    background-color: #d9d9d9;
+}
+
+/* Panel derecho (chat) */
+.panel-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #e5ddd5;
+}
+
+/* Encabezado del chat */
+.chat-header {
+    background: #075e54;
+    color: white;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-header h3 {
+    font-size: 17px;
+    margin: 0;
+}
+
+.chat-header small {
+    color: #c7c7c7;
+    font-size: 13px;
+}
+
+/* Área de mensajes */
+#mensajes {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    background: #e5ddd5;
+}
+
+/* Burbujas */
+.mensaje {
+    display: flex;
+    margin: 8px 0;
+}
+
+.mensaje.enviado {
+    justify-content: flex-end;
+}
+
+.mensaje.recibido {
+    justify-content: flex-start;
+}
+
+.burbuja {
+    position: relative;
+    max-width: 75%;
+    padding: 10px 12px;
+    border-radius: 15px;
+    font-size: 15px;
+    word-wrap: break-word;
+    line-height: 1.4;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+}
+
+.enviado .burbuja {
+    background: #dcf8c6;
+    border-bottom-right-radius: 0;
+}
+
+.recibido .burbuja {
+    background: #fff;
+    border-bottom-left-radius: 0;
+}
+
+.hora {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    text-align: right;
+    margin-top: 3px;
+}
+
+/* Input inferior */
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background: #f0f0f0;
+    align-items: center;
+    gap: 10px;
+}
+
+#mensajeInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+}
+
+#mensajeInput:focus {
+    border-color: #25d366;
+}
+
+button.enviar {
+    background-color: #25d366;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.enviar:hover {
+    background-color: #1ebc59;
+}
+
+/* Scroll personalizado */
+#mensajes::-webkit-scrollbar {
+    width: 6px;
+}
+#mensajes::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 10px;
+}
+
+/* 🧠 Responsive */
+@media (max-width: 992px) {
+    .chat-container {
+        flex-direction: column;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .panel-lista {
+        width: 100%;
+        height: 35%;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .panel-chat {
+        height: 65%;
+    }
+}
+
+@media (max-width: 600px) {
+    .chat-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .panel-lista {
+        display: none; /* se oculta lista al entrar al chat */
+    }
+
+    .panel-chat {
+        width: 100%;
+        height: 100%;
+    }
+
+    .chat-header h3 {
+        font-size: 15px;
+    }
+
+    #mensajeInput {
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,62 @@
+/* Fondo y fuente solo para Edit */
+.edit-page {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor */
+.edit-page .container .card {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Tarjeta */
+.edit-page .card {
+    border-radius: 12px;
+    border: none;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+/* Encabezado */
+.edit-page h2 {
+    font-weight: 700;
+    color: #0077b6;
+}
+
+/* Labels */
+.edit-page label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs y selects */
+.edit-page .form-control,
+.edit-page .form-select {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+/* Botones */
+.edit-page .btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.edit-page .btn-success {
+    background-color: #28a745;
+    border: none;
+}
+.edit-page .btn-success:hover {
+    background-color: #218838;
+}
+
+.edit-page .btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+.edit-page .btn-danger:hover {
+    background-color: #c82333;
+}

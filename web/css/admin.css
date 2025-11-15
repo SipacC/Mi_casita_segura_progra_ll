@@ -1,0 +1,179 @@
+/* ===== Dashboard Cards (solo admin) ===== */
+.admin-page .dashboard-card {
+    background: #ffffff; /* Fondo blanco limpio */
+    border-radius: 12px;
+    padding: 28px 22px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    height: 100%;
+    transition: all 0.25s ease;
+}
+
+/* Hover sutil y elegante */
+.admin-page .dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    border-color: #cfd9e5;
+}
+
+/* Íconos */
+.admin-page .card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    color: #0d6efd; /* Azul corporativo Bootstrap */
+}
+
+/* Títulos */
+.admin-page .dashboard-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+/* Texto */
+.admin-page .dashboard-card p {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    color: #555555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Botón */
+.admin-page .card-btn {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.admin-page .card-btn:hover {
+    background-color: #084298;
+    transform: translateY(-2px);
+}
+
+/* ===== Header Admin ===== */
+.admin-page .admin-header {
+    background-color: #0d6efd; /* azul corporativo (opcional) */
+    color: #fff;
+    padding: 20px 0;           /* más alto */
+    font-size: 1.2rem;         /* texto más grande */
+}
+
+/* Logo */
+.admin-page .admin-header .logo {
+    font-size: 1.5rem;         /* agranda el logo/texto */
+    font-weight: 700;
+}
+
+/* Información usuario */
+.admin-page .admin-header .user-info span {
+    font-size: 1.1rem;         /* agranda el texto de bienvenida */
+}
+
+/* Botón logout */
+.admin-page .admin-header .btn-sm {
+    font-size: 1rem;           /* botón un poco más grande */
+    padding: 8px 14px;         /* más alto y ancho */
+    border-radius: 6px;
+}
+
+/* ===== Footer ===== */
+.admin-footer {
+    background-color: #f8f9fa;
+    padding: 18px 0;
+    color: #6c757d;
+    font-size: 0.95rem;
+    border-top: 1px solid #dee2e6;
+}
+
+/* ===== Responsividad ===== */
+
+/* Tablets medianas */
+@media (max-width: 992px) {
+    .admin-page .admin-header {
+        text-align: center;
+    }
+
+    .admin-page .admin-header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .admin-page .dashboard-card {
+        margin-bottom: 20px;
+    }
+
+    .admin-page .dashboard-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .admin-page .card-icon {
+        font-size: 2.4rem;
+    }
+}
+
+/* Móviles (pantallas pequeñas) */
+@media (max-width: 768px) {
+    body {
+        padding: 0 12px;
+    }
+
+    .admin-page .admin-header .logo {
+        font-size: 1.3rem;
+    }
+
+    .admin-page .admin-header .user-info span {
+        font-size: 1rem;
+    }
+
+    .admin-page .dashboard-card {
+        padding: 22px 16px;
+    }
+
+    .admin-page .dashboard-card p {
+        font-size: 0.9rem;
+    }
+
+    .admin-page .card-icon {
+        font-size: 2.2rem;
+    }
+
+    .admin-footer {
+        font-size: 0.85rem;
+        padding: 14px 0;
+    }
+}
+
+/* Teléfonos compactos */
+@media (max-width: 480px) {
+    .admin-page .admin-header {
+        font-size: 1rem;
+        padding: 14px 0;
+    }
+
+    .admin-page .admin-header .btn-sm {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    .admin-page .dashboard-card h3 {
+        font-size: 1rem;
+    }
+
+    .admin-page .card-btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}

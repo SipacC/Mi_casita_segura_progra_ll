@@ -1,0 +1,300 @@
+package websocket;
+
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
+
+import ConexionDB.ConexionDB;
+import util.CorreoNotificacion;
+
+import java.io.IOException;
+import java.sql.*;
+
+@ServerEndpoint("/qrSocket")
+public class QrSocket {
+
+    private static String ultimoQR = "";
+    private static long tiempoUltimoQR = 0;
+
+    @OnOpen
+    public void onOpen(Session session) {
+        System.out.println("Conexión WebSocket abierta: " + session.getId());
+        try {
+            ArduinoSerial.conectar("COM3", 115200);
+        } catch (Exception e) {
+            System.err.println("Error al conectar con Arduino: " + e.getMessage());
+        }
+    }
+
+    @OnMessage
+    public void onMessage(String message, Session session) throws IOException {
+        System.out.println("QR recibido: " + message);
+        String respuesta = validarQr(message);
+        session.getBasicRemote().sendText(respuesta);
+    }
+
+    @OnClose
+    public void onClose(Session session) {
+        System.out.println("🔌 Conexión WebSocket cerrada: " + session.getId());
+        try {
+            ArduinoSerial.cerrar();
+        } catch (Exception e) {
+            System.err.println("Error al cerrar conexión con Arduino: " + e.getMessage());
+        }
+    }
+
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        System.err.println("Error en WebSocket: " + throwable.getMessage());
+        throwable.printStackTrace();
+    }
+
+    // ==============================
+    // VALIDACIÓN DE QR
+    // ==============================
+    private String validarQr(String message) {
+        long ahora = System.currentTimeMillis();
+        if (message.equals(ultimoQR) && (ahora - tiempoUltimoQR < 2000)) {
+            System.out.println("Ignorado QR duplicado en servidor (anti-spam): " + message);
+            return "{\"resultado\":\"duplicado\"}";
+        }
+        ultimoQR = message;
+        tiempoUltimoQR = ahora;
+
+        try (Connection con = ConexionDB.openConnection()) {
+            String[] partes = message.split(";");
+            String tipo = "entrada";
+            String idStr;
+            String codigo;
+
+            if (message.startsWith("tipo:")) {
+                tipo = partes[0].split(":")[1];
+                idStr = partes[1].split(":")[1];
+                codigo = partes[2].split(":")[1];
+            } else {
+                idStr = partes[0].split(":")[1];
+                codigo = partes[1].split(":")[1];
+            }
+
+            int id = Integer.parseInt(idStr);
+
+            // ========================
+            // 1. Validar QR de usuario
+            // ========================
+            PreparedStatement ps = con.prepareStatement(
+                "SELECT q.id_qr_usuario, (u.nombre || ' ' || u.apellido) AS nombre_completo " +
+                "FROM qr_usuario q " +
+                "INNER JOIN usuarios u ON q.id_usuario = u.id_usuario " +
+                "WHERE q.id_usuario=? AND q.codigo_qr_usuario=? AND q.estado='activo'"
+            );
+            ps.setInt(1, id);
+            ps.setString(2, codigo);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int idQrUsuario = rs.getInt("id_qr_usuario");
+                String usuario = rs.getString("nombre_completo");
+
+                if (registrarAcceso(con, idQrUsuario, tipo, "acceso_usuario")) {
+                    if ("entrada".equalsIgnoreCase(tipo)) {
+                        ArduinoSerial.enviar("1\n");
+                    } else {
+                        ArduinoSerial.enviar("2\n");
+                    }
+                    return "{\"resultado\":\"valido\",\"usuario\":\"" + usuario + "\"}";
+                } else {
+                    return "{\"resultado\":\"duplicado\",\"usuario\":\"" + usuario + "\"}";
+                }
+            }
+
+            // ========================
+            // 2. Validar QR de visita
+            // ========================
+            ps = con.prepareStatement(
+                "SELECT q.id_qr_visita, v.nombre, v.estado, q.valido_hasta, q.intentos " +
+                "FROM qr_visita q " +
+                "INNER JOIN visita v ON q.id_visita = v.id_visita " +
+                "WHERE q.id_visita=? AND q.codigo_qr_visita=?"
+            );
+            ps.setInt(1, id);
+            ps.setString(2, codigo);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int idQrVisita = rs.getInt("id_qr_visita");
+                String nombreVisitante = rs.getString("nombre");
+                String estado = rs.getString("estado");
+                Timestamp validoHasta = rs.getTimestamp("valido_hasta");
+                Integer intentos = rs.getInt("intentos");
+                if (rs.wasNull()) intentos = null;
+
+                // Validaciones
+                if (!"activo".equalsIgnoreCase(estado)) {
+                    return "{\"resultado\":\"invalido\",\"usuario\":\"" + nombreVisitante + "\"}";
+                }
+                if (validoHasta != null && validoHasta.before(new Timestamp(System.currentTimeMillis()))) {
+                    // 🔔 Enviar correo de intento con QR vencido
+                    final int finalId = id;
+                    final String finalNombreVisitante = nombreVisitante;
+                    final Timestamp finalValidoHasta = validoHasta;
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try (Connection conNotif = ConexionDB.openConnection()) {
+                                PreparedStatement psMail = conNotif.prepareStatement(
+                                    "SELECT u.correo, (u.nombre || ' ' || u.apellido) AS residente " +
+                                    "FROM visita v " +
+                                    "INNER JOIN usuarios u ON v.id_usuario = u.id_usuario " +
+                                    "WHERE v.id_visita=?"
+                                );
+                                psMail.setInt(1, finalId);
+                                ResultSet rsMail = psMail.executeQuery();
+                                if (rsMail.next()) {
+                                    String correoResidente = rsMail.getString("correo");
+                                    String nombreResidente = rsMail.getString("residente");
+
+                                    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+                                    String asunto = "Intento de acceso con QR vencido";
+
+                                    String cuerpo = "⚠️ El código QR generado para la persona " + finalNombreVisitante +
+                                            " intentó ser utilizado el día " + ahora.toLocalDate() +
+                                            " a las " + ahora.toLocalTime().withNano(0) +
+                                            " pero ya había vencido (fecha de validez: " + finalValidoHasta.toString() + ").\n\n" +
+                                            "El acceso fue denegado.\n\n" +
+                                            "En caso de cualquier irregularidad, por favor contacte al administrador del sistema.";
+
+                                    CorreoNotificacion.enviar(correoResidente, asunto, cuerpo);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
+                    return "{\"resultado\":\"invalido\",\"usuario\":\"" + nombreVisitante + "\"}";
+                }
+                if (intentos != null && intentos <= 0) {
+                    return "{\"resultado\":\"invalido\",\"usuario\":\"" + nombreVisitante + "\"}";
+                }
+
+                if (registrarAcceso(con, idQrVisita, tipo, "acceso_visita")) {
+                    // Restar intento si aplica
+                    if (intentos != null) {
+                        PreparedStatement psUpdate = con.prepareStatement(
+                            "UPDATE qr_visita SET intentos = intentos - 1 WHERE id_qr_visita=?"
+                        );
+                        psUpdate.setInt(1, idQrVisita);
+                        psUpdate.executeUpdate();
+
+                        intentos = intentos - 1; // ✅ reflejamos valor correcto
+                    }
+
+                    // Señal al Arduino
+                    if ("entrada".equalsIgnoreCase(tipo)) {
+                        ArduinoSerial.enviar("1\n");
+                    } else {
+                        ArduinoSerial.enviar("2\n");
+                    }
+
+                    // 🔔 Enviar correo en segundo plano
+                    final int finalId = id;
+                    final String finalNombreVisitante = nombreVisitante;
+                    final String finalTipo = tipo;
+                    final Timestamp finalValidoHasta = validoHasta;
+                    final Integer finalIntentos = intentos;
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try (Connection conNotif = ConexionDB.openConnection()) {
+                                PreparedStatement psMail = conNotif.prepareStatement(
+                                    "SELECT u.correo, (u.nombre || ' ' || u.apellido) AS residente " +
+                                    "FROM visita v " +
+                                    "INNER JOIN usuarios u ON v.id_usuario = u.id_usuario " +
+                                    "WHERE v.id_visita=?"
+                                );
+                                psMail.setInt(1, finalId);
+                                ResultSet rsMail = psMail.executeQuery();
+                                if (rsMail.next()) {
+                                    String correoResidente = rsMail.getString("correo");
+                                    String nombreResidente = rsMail.getString("residente");
+
+                                    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+                                    String asunto = "Notificación de acceso";
+
+                                    String cuerpo;
+                                    if (finalIntentos != null && finalIntentos <= 0) {
+                                        cuerpo = "El código QR generado para la persona " + finalNombreVisitante +
+                                                " fue utilizado el día " + ahora.toLocalDate() +
+                                                " a las " + ahora.toLocalTime().withNano(0) +
+                                                " para " + finalTipo + " al condominio.\n\n" +
+                                                "⚠️ Este QR ya no tiene más intentos disponibles y ha quedado INVALIDADO.";
+                                    } else {
+                                        cuerpo = "El código QR generado para la persona " + finalNombreVisitante +
+                                                " fue utilizado exitosamente el día " + ahora.toLocalDate() +
+                                                " a las " + ahora.toLocalTime().withNano(0) +
+                                                " para " + finalTipo + " al condominio.\n\n" +
+                                                "Este código tiene una validez de " +
+                                                (finalValidoHasta != null ? finalValidoHasta.toString() : finalIntentos + " intentos restantes") +
+                                                ".";
+                                    }
+
+                                    cuerpo += "\n\nEn caso de cualquier irregularidad, por favor contacte al administrador del sistema.";
+
+                                    CorreoNotificacion.enviar(correoResidente, asunto, cuerpo);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
+                    return "{\"resultado\":\"valido\",\"usuario\":\"" + nombreVisitante + "\"}";
+                } else {
+                    return "{\"resultado\":\"duplicado\",\"usuario\":\"" + nombreVisitante + "\"}";
+                }
+            }
+
+            // ========================
+            // 3. Ningún QR encontrado
+            // ========================
+            ArduinoSerial.enviar("0\n");
+            return "{\"resultado\":\"invalido\"}";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"resultado\":\"error\"}";
+        }
+    }
+
+    /**
+     * Registra el acceso y evita duplicados consecutivos (ej. 2 entradas seguidas).
+     */
+    private boolean registrarAcceso(Connection con, int idQr, String tipo, String tabla) throws SQLException {
+        PreparedStatement psUltimo = con.prepareStatement(
+            "SELECT tipo FROM " + tabla + " WHERE " +
+            (tabla.equals("acceso_usuario") ? "id_qr_usuario" : "id_qr_visita") +
+            "=? ORDER BY fecha_hora DESC LIMIT 1"
+        );
+        psUltimo.setInt(1, idQr);
+        ResultSet rsUltimo = psUltimo.executeQuery();
+
+        if (rsUltimo.next()) {
+            String ultimoTipo = rsUltimo.getString("tipo");
+            if (ultimoTipo != null && ultimoTipo.equalsIgnoreCase(tipo)) {
+                return false; // duplicado
+            }
+        }
+
+        PreparedStatement ps2 = con.prepareStatement(
+            "INSERT INTO " + tabla + " (" +
+            (tabla.equals("acceso_usuario") ? "id_qr_usuario" : "id_qr_visita") +
+            ", tipo, fecha_hora) VALUES (?, ?, NOW())"
+        );
+        ps2.setInt(1, idQr);
+        ps2.setString(2, tipo);
+        ps2.executeUpdate();
+
+        return true; // acceso registrado
+    }
+}

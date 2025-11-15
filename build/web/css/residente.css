@@ -1,0 +1,176 @@
+/* ===== Dashboard Cards (solo residente) ===== */
+.admin-page .dashboard-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 28px 22px;
+    border: 1px solid #e0e7ec;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    height: 100%;
+    transition: all 0.25s ease;
+}
+
+/* Hover */
+.admin-page .dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    border-color: #c6d8e4;
+}
+
+/* Íconos */
+.admin-page .card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    color: #198754; /* Verde Bootstrap */
+}
+
+/* Títulos */
+.admin-page .dashboard-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* Texto */
+.admin-page .dashboard-card p {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    color: #4f5d75;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Botones */
+.admin-page .card-btn {
+    background-color: #198754;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.admin-page .card-btn:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+}
+
+/* ===== Header Residente ===== */
+.admin-page .admin-header {
+    background-color: #198754;
+    color: #fff;
+    padding: 20px 0;
+    font-size: 1.2rem;
+}
+
+.admin-page .admin-header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.admin-page .admin-header .user-info span {
+    font-size: 1.1rem;
+}
+
+.admin-page .admin-header .btn-sm {
+    font-size: 1rem;
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+/* ===== Footer ===== */
+.admin-footer {
+    background-color: #f8f9fa;
+    padding: 18px 0;
+    color: #6c757d;
+    font-size: 0.95rem;
+    border-top: 1px solid #dee2e6;
+}
+
+/* ===== Responsividad ===== */
+
+/* Pantallas medianas (tablets) */
+@media (max-width: 992px) {
+    .admin-page .admin-header {
+        text-align: center;
+    }
+
+    .admin-page .admin-header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .admin-page .dashboard-card {
+        margin-bottom: 20px;
+    }
+
+    .admin-page .dashboard-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .admin-page .card-icon {
+        font-size: 2.4rem;
+    }
+}
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+    body {
+        padding: 0 12px;
+    }
+
+    .admin-page .admin-header .logo {
+        font-size: 1.3rem;
+    }
+
+    .admin-page .admin-header .user-info span {
+        font-size: 1rem;
+    }
+
+    .admin-page .dashboard-card {
+        padding: 20px 16px;
+    }
+
+    .admin-page .dashboard-card p {
+        font-size: 0.9rem;
+    }
+
+    .admin-page .card-icon {
+        font-size: 2.2rem;
+    }
+
+    .admin-footer {
+        font-size: 0.85rem;
+        padding: 14px 0;
+    }
+}
+
+/* Pantallas muy pequeñas (teléfonos compactos) */
+@media (max-width: 480px) {
+    .admin-page .admin-header {
+        font-size: 1rem;
+        padding: 14px 0;
+    }
+
+    .admin-page .admin-header .btn-sm {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    .admin-page .dashboard-card h3 {
+        font-size: 1rem;
+    }
+
+    .admin-page .card-btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}

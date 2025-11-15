@@ -1,0 +1,165 @@
+/* ===== SOLO LOGIN ===== */
+.login-page {
+    background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor */
+.login-page .container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+/* Tarjeta */
+.login-page .login-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 35px 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-page .login-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.25);
+}
+
+/* Logo */
+.login-page .logo i {
+    font-size: 50px;
+    color: #3498db;
+    margin-bottom: 12px;
+}
+
+.login-page .logo h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+
+.login-page .logo p {
+    font-size: 15px;
+    color: #7f8c8d;
+    margin-bottom: 25px;
+}
+
+/* Formularios */
+.login-page .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.login-page .form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+    color: #2c3e50;
+}
+
+.login-page .input-with-icon {
+    position: relative;
+}
+
+/* Ícono izquierdo (usuario / candado) */
+.login-page .input-with-icon i:first-child {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+/* Inputs */
+.login-page .form-control {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px 40px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.login-page .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+    outline: none;
+    background: #fff;
+}
+
+/* Toggle contraseña (ojo derecho) */
+.login-page .password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+/* Botón */
+.login-page .btn-login {
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    background: linear-gradient(90deg, #3498db, #2c3e50);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(52,152,219,0.3);
+    transition: all 0.3s ease;
+}
+
+.login-page .btn-login:hover {
+    background: linear-gradient(90deg, #2980b9, #1a252f);
+    box-shadow: 0 6px 16px rgba(52,152,219,0.4);
+    transform: translateY(-2px);
+}
+
+.login-page .btn-login:active {
+    transform: translateY(0);
+}
+
+/* Error */
+.login-page .error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Footer */
+.login-page .footer {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
+/* ==== FIX: Ocultar el ojo nativo de navegadores ==== */
+.login-page input[type="password"]::-ms-reveal,
+.login-page input[type="password"]::-ms-clear {
+    display: none;
+}
+
+.login-page input[type="password"]::-webkit-credentials-auto-fill-button,
+.login-page input[type="password"]::-webkit-clear-button,
+.login-page input[type="password"]::-webkit-inner-spin-button,
+.login-page input[type="password"]::-webkit-reveal {
+    display: none !important;
+}

@@ -1,0 +1,124 @@
+/* Fondo general solo para bitácora */
+.bitacora-page {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    max-width: 1200px;   /* Limita ancho */
+    margin: 0 auto;      /* Centra horizontalmente */
+}
+
+/* Encabezado */
+.bitacora-page h2 {
+    font-weight: 700;
+    color: #0077b6;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    animation: fadeIn 0.6s ease;
+}
+
+/* Labels */
+.bitacora-page label {
+    font-weight: 600;
+    color: #444;
+    text-align: center;
+    display: block;
+}
+
+/* Inputs */
+.bitacora-page .form-control {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    text-align: center; /* centra texto dentro del input */
+    transition: all 0.3s ease;
+}
+.bitacora-page .form-control:focus {
+    border-color: #0096c7;
+    box-shadow: 0 0 0 0.2rem rgba(0, 150, 199, 0.25);
+}
+
+/* Botones */
+.bitacora-page .btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    min-width: 150px;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Colores personalizados */
+.bitacora-page .btn-primary {
+    background-color: #0077b6;
+    border: none;
+}
+.bitacora-page .btn-primary:hover {
+    background-color: #005f8a;
+}
+
+.bitacora-page .btn-warning {
+    background-color: #ffb703;
+    border: none;
+    color: #000;
+}
+.bitacora-page .btn-warning:hover {
+    background-color: #e09e02;
+}
+
+.bitacora-page .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+.bitacora-page .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Tabla */
+.bitacora-page .table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    animation: fadeIn 0.8s ease;
+}
+.bitacora-page .table th {
+    background: #0077b6;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+}
+.bitacora-page .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+/* Formulario: inputs y botones centrados y con espacio */
+.bitacora-page form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px; /* 🔹 asegura espacio entre inputs y botones */
+}
+
+/* Animación suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bitacora-page .btn {
+        min-width: 100%;
+        margin-bottom: 10px;
+    }
+    .bitacora-page h2 {
+        font-size: 1.5rem;
+    }
+    .bitacora-page form {
+        text-align: center; /* centra inputs y labels en móvil */
+    }
+}

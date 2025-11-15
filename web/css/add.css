@@ -1,0 +1,99 @@
+/* 🌿 Fondo y fuente */
+.add-page {
+    background: #e9f7ef; /* verde claro profesional */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* 📦 Contenedor */
+.add-page .container .card {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+/* 🧭 Encabezado principal */
+.add-page h2 {
+    font-weight: 700;
+    color: #0077b6; /* azul institucional */
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* 📋 Tarjeta */
+.add-page .card {
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease;
+    border: 1px solid #dee2e6;
+}
+
+/* 📄 Campos del formulario */
+.add-page .form-control, 
+.add-page .form-select {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.add-page .form-control:focus, 
+.add-page .form-select:focus {
+    border-color: #0096c7;
+    box-shadow: 0 0 0 0.2rem rgba(0, 150, 199, 0.25);
+}
+
+/* 🔘 Botones */
+.btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+/* ➕ Guardar */
+.add-page .btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+.add-page .btn-success:hover {
+    background-color: #218838;
+}
+
+/* ⬅️ Cancelar */
+.add-page .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+.add-page .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* ✨ Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 📱 Responsivo */
+@media (max-width: 768px) {
+    .add-page h2 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+    .add-page .btn {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+}
+
+/* 🎨 Etiquetas de los campos */
+.add-page .form-label {
+    font-weight: 600;
+    color: #0077b6; /* Azul institucional */
+}

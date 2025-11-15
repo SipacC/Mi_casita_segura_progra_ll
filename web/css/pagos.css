@@ -1,0 +1,180 @@
+/* === MÓDULO HISTORIAL DE PAGOS ===
+   🔸 Basado 100% en TABLAS (sin cards)
+   🔸 Misma paleta y estilo que el módulo USUARIOS
+   🔸 Colores principales: Azul #0077b6 y Verde #28a745
+*/
+
+.pagos-page {
+    background: #e9f7ef; /* verde claro del fondo general */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* 📦 Contenedor principal */
+.pagos-page .container {
+    max-width: 1300px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+}
+
+/* 🧾 Título principal */
+.pagos-page h2 {
+    font-weight: 700;
+    color: #0077b6; /* azul institucional */
+    text-transform: uppercase;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+/* 📋 Tabla */
+.pagos-page .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* 🧱 Encabezado */
+.pagos-page .table thead th {
+    background-color: #0077b6;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 14px;
+    border-bottom: 3px solid #006494;
+    text-align: center;
+}
+
+/* 📄 Celdas */
+.pagos-page .table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #212529;
+    font-size: 0.95rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* 🧩 Filas alternadas */
+.pagos-page .table tbody tr:nth-child(even) {
+    background-color: #f8faff;
+}
+
+/* 💫 Hover fila */
+.pagos-page .table tbody tr:hover {
+    background-color: #e7f3fa;
+    transition: background 0.25s ease-in-out;
+}
+
+/* 🚫 Sin registros */
+.pagos-page .table td.text-center {
+    color: #6c757d;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* 🔘 Botones generales */
+.pagos-page .btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.25s ease-in-out;
+}
+
+/* 🔙 Botón Regresar (azul) */
+.pagos-page .btn-secondary {
+    background-color: #0077b6;
+    color: #fff;
+}
+.pagos-page .btn-secondary:hover {
+    background-color: #006494;
+}
+
+/* 🟢 Botón Consultar (verde) */
+.pagos-page .btn-primary {
+    background-color: #28a745;
+    color: #fff;
+}
+.pagos-page .btn-primary:hover {
+    background-color: #218838;
+}
+
+/* 🟨 Botón Editar */
+.pagos-page .btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+.pagos-page .btn-warning:hover {
+    background-color: #e0a800;
+}
+
+/* 🟥 Botón Eliminar */
+.pagos-page .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+.pagos-page .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* 🏷️ Badges (estados) */
+.pagos-page .badge {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+.pagos-page .badge.bg-success {
+    background-color: #28a745 !important;
+}
+.pagos-page .badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+.pagos-page .badge.bg-secondary {
+    background-color: #adb5bd !important;
+}
+
+/* 💻 Scroll horizontal */
+.pagos-page .table-responsive {
+    overflow-x: auto;
+    border-radius: 8px;
+}
+.pagos-page .table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+.pagos-page .table-responsive::-webkit-scrollbar-thumb {
+    background-color: #0077b6;
+    border-radius: 5px;
+}
+.pagos-page .table-responsive::-webkit-scrollbar-track {
+    background-color: #cdebd4;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .pagos-page h2 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+    .pagos-page .container {
+        padding: 20px;
+    }
+    .pagos-page .table {
+        font-size: 0.85rem;
+    }
+    .pagos-page .btn {
+        font-size: 0.85rem;
+        padding: 8px 14px;
+    }
+}

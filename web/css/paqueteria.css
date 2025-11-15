@@ -1,0 +1,131 @@
+/* 🌿 Fondo y fuente general */
+.paqueteria-page {
+    background: #edf6f9; /* azul grisáceo claro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* 📦 Contenedor principal */
+.paqueteria-page .container {
+    max-width: 1300px;
+    margin: 40px auto;
+}
+
+/* 🧭 Título principal */
+.paqueteria-page h2 {
+    font-weight: 700;
+    color: #0077b6; /* azul institucional */
+    text-transform: uppercase;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* 📋 Tabla general */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+/* 🧱 Cabecera */
+.table thead th {
+    background-color: #023e8a; /* azul oscuro */
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 14px;
+    border-bottom: 2px solid #0077b6;
+}
+
+/* 📄 Celdas */
+.table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #212529;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+/* 🧩 Hover fila */
+.table tbody tr:hover {
+    background-color: #e7f3fa;
+    transition: background 0.2s ease-in-out;
+}
+
+/* 🚫 Mensaje sin registros */
+.text-danger {
+    color: #dc3545 !important;
+    font-weight: 600;
+}
+
+/* 🔘 Botones generales */
+.btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+/* ⬅️ Regresar */
+.btn-primary {
+    background-color: #0077b6;
+    color: #fff;
+}
+.btn-primary:hover {
+    background-color: #006494;
+}
+
+/* 🏷️ Estado del paquete */
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.8em;
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+}
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+.badge.bg-success {
+    background-color: #198754 !important;
+}
+
+/* 💻 Scroll horizontal */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 8px;
+}
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #0077b6;
+    border-radius: 5px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background-color: #dbe7f0; /* azul claro suave */
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .paqueteria-page h2 {
+        font-size: 1.6rem;
+    }
+    .table {
+        font-size: 0.85rem;
+    }
+    .btn {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+    }
+}
