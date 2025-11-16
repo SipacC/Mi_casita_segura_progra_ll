@@ -77,7 +77,7 @@
                         <i class="fas fa-arrow-right"></i> Acceder
                     </a>
                 </div>
-            </div> -->
+            </div>
             <!-- Comunicación Interna -->
             <div class="col-12 col-md-3">
                 <div class="card dashboard-card h-100 text-center">

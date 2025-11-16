@@ -369,6 +369,57 @@ public List<String> listarCorreosAdministradores() {
     return correos;
 }
 
+public List<Usuario> listarConFiltroFecha(java.sql.Date fechaDesde, java.sql.Date fechaHasta) {
+    List<Usuario> lista = new ArrayList<>();
+    StringBuilder sql = new StringBuilder(
+        "SELECT id_usuario, dpi, nombre, apellido, usuario, rol, contrasena, correo, lote, numero_casa, estado, fecha_creacion " +
+        "FROM usuarios WHERE 1=1"
+    );
+
+    if (fechaDesde != null) {
+        sql.append(" AND fecha_creacion >= ?");
+    }
+    if (fechaHasta != null) {
+        sql.append(" AND fecha_creacion <= ?");
+    }
+
+    sql.append(" ORDER BY fecha_creacion DESC, nombre");
+
+    try (PreparedStatement ps = con.prepareStatement(sql.toString())) {
+        
+        int paramIndex = 1;
+        if (fechaDesde != null) {
+            ps.setDate(paramIndex++, fechaDesde);
+        }
+        if (fechaHasta != null) {
+            ps.setDate(paramIndex++, fechaHasta);
+        }
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Usuario u = new Usuario();
+                u.setIdUsuario(rs.getInt("id_usuario"));
+                u.setDpi(rs.getString("dpi"));
+                u.setNombre(rs.getString("nombre"));
+                u.setApellido(rs.getString("apellido"));
+                u.setUsuario(rs.getString("usuario"));
+                u.setRol(rs.getString("rol"));
+                u.setContrasena(rs.getString("contrasena"));
+                u.setCorreo(rs.getString("correo"));
+                u.setLote(rs.getString("lote"));
+                u.setNumeroCasa(rs.getString("numero_casa"));
+                u.setEstado(rs.getString("estado"));
+                u.setFechaCreacion(rs.getDate("fecha_creacion"));
+                lista.add(u);
+            }
+        }
+
+    } catch (Exception e) {
+        System.err.println("Error en listarConFiltroFecha(): " + e.getMessage());
+        e.printStackTrace();
+    }
+    return lista;
+}
 
 
 }

@@ -16,6 +16,7 @@ import ModeloDAO.CatalogoDAO;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -65,9 +66,39 @@ public class ControladorAdmin extends HttpServlet {
             acceso = menuAdmin;
 
         } else if (action.equalsIgnoreCase("listar")) {
-            request.setAttribute("lista", dao.listar());
-            acceso = listar;
-
+            String fechaDesdeStr = request.getParameter("fechaDesde");
+    String fechaHastaStr = request.getParameter("fechaHasta");
+    
+    java.sql.Date fechaDesde = null;
+    java.sql.Date fechaHasta = null;
+    
+    if (fechaDesdeStr != null && !fechaDesdeStr.trim().isEmpty()) {
+        try {
+            fechaDesde = java.sql.Date.valueOf(fechaDesdeStr);
+        } catch (Exception e) {
+            System.err.println("❌ Error parseando fechaDesde: " + e.getMessage());
+        }
+    }
+    
+    if (fechaHastaStr != null && !fechaHastaStr.trim().isEmpty()) {
+        try {
+            fechaHasta = java.sql.Date.valueOf(fechaHastaStr);
+        } catch (Exception e) {
+            System.err.println("❌ Error parseando fechaHasta: " + e.getMessage());
+        }
+    }
+    
+    List<Usuario> lista;
+    
+    // Usar filtro si hay fechas, sino lista normal
+    if (fechaDesde != null || fechaHasta != null) {
+        lista = dao.listarConFiltroFecha(fechaDesde, fechaHasta);
+    } else {
+        lista = dao.listar();
+    }
+    
+    request.setAttribute("lista", lista);
+    acceso = listar;
         } else if (action.equalsIgnoreCase("add")) {
 
              CatalogoDAO catalogoDAO = new CatalogoDAO(con);
